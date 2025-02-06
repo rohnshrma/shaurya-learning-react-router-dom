@@ -1,0 +1,34 @@
+import React from "react";
+
+const Dish = ({ dishObj }) => {
+  return (
+    <div className="col-lg-3 mb-5">
+      <div className="card dish-box">
+        <img
+          src={dishObj.imageUrl}
+          alt={dishObj.name}
+          style={{ height: "200px", objectFit: "cover" }}
+          className="card-img-top"
+        />
+        <div className="card-body">
+          <div className="row dish-info justify-content-between mb-3">
+            <div className="col-8">
+              <h5 className="card-title text-start">{dishObj.name}</h5>
+            </div>
+            <div className="col-4">
+              <p className="card-text text-end dish-price">{dishObj.price}</p>
+            </div>
+            <p className="card-text text-start">{dishObj.description}</p>
+          </div>
+          <div className="d-grid">
+            <a href="#" className="btn btn-primary">
+              Add To Cart
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dish;
