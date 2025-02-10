@@ -1,6 +1,16 @@
 import React from "react";
 
-const Dish = ({ dishObj }) => {
+const Dish = ({ dishObj, onAdd }) => {
+  const addToCartHandler = () => {
+    onAdd({
+      name: dishObj.name,
+      imageUrl: dishObj.imageUrl,
+      description: dishObj.description,
+      price: dishObj.price,
+      id: dishObj.id,
+    });
+  };
+
   return (
     <div className="col-lg-3 mb-5">
       <div className="card dish-box">
@@ -21,9 +31,9 @@ const Dish = ({ dishObj }) => {
             <p className="card-text text-start">{dishObj.description}</p>
           </div>
           <div className="d-grid">
-            <a href="#" className="btn btn-primary">
+            <button className="btn btn-primary" onClick={addToCartHandler}>
               Add To Cart
-            </a>
+            </button>
           </div>
         </div>
       </div>
