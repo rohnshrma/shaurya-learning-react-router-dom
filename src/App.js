@@ -7,64 +7,53 @@ import Cart from "./Pages/Cart";
 import Navbar from "./components/Navbar";
 import dishesData from "./data.js";
 import "./App.css";
-import { useState } from "react";
+import { useState, useReducer } from "react";
+
+const initialState = {
+  cartItems: [],
+  total: 0,
+};
+
+const reducerFunction = (state, action) => {
+  if (action.type === "ADD") {
+    console.log("Adding new item", action.payload);
+    const existingItemIndex = state.cartItems.findIndex(
+      (item) => item.id === action.payload.id
+    );
+
+    console.log("Ex:", existingItemIndex);
+    console.log(state.cartItems[existingItemIndex]);
+
+    let updatedCartItems;
+    if (existingItemIndex !== -1) {
+      updatedCartItems = [...state.cartItems];
+      updatedCartItems[existingItemIndex].quantity += 1;
+    } else {
+      updatedCartItems = [
+        ...state.cartItems,
+        { ...action.payload, quantity: 1 },
+      ];
+    }
+
+    const newTotal = updatedCartItems.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+
+    return {
+      cartItems: updatedCartItems,
+      total: newTotal,
+    };
+  }
+
+  return state;
+};
 
 function App() {
-  const [cart, setCart] = useState({
-    cartItems: [],
-    total: 0,
-  });
+  const [cartState, dispatch] = useReducer(reducerFunction, initialState);
 
   const addItemsToCart = (itemObj) => {
-    console.log("Item Object:", itemObj); // Log the incoming item object
-
-    setCart((prevCart) => {
-      // Create a new item with default values
-      const newItem = {
-        ...itemObj,
-        id: itemObj.id, // Ensure the item has an `id`
-        price: Number(itemObj.price) || 0,
-        quantity: itemObj.quantity ? Number(itemObj.quantity) : 1,
-      };
-
-      console.log("New Item:", newItem); // Log the new item
-
-      // Check if the item already exists in the cart
-      const existingItem = prevCart.cartItems.find(
-        (item) => item.id === newItem.id
-      );
-
-      console.log("Existing Item:", existingItem); // Log the existing item
-
-      let updatedCartItems;
-      if (existingItem) {
-        // If the item exists, update its quantity
-        updatedCartItems = prevCart.cartItems.map((item) =>
-          item.id === newItem.id
-            ? { ...item, quantity: item.quantity + newItem.quantity }
-            : item
-        );
-      } else {
-        // If the item does not exist, add it to the cart
-        updatedCartItems = [...prevCart.cartItems, newItem];
-      }
-
-      console.log("Updated Cart Items:", updatedCartItems); // Log the updated cart items
-
-      // Calculate the new total
-      const newTotal = updatedCartItems.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-      );
-
-      console.log("New Total:", newTotal); // Log the new total
-
-      // Return the updated cart state
-      return {
-        cartItems: updatedCartItems,
-        total: newTotal,
-      };
-    });
+    dispatch({ type: "ADD", payload: itemObj });
   };
 
   return (
