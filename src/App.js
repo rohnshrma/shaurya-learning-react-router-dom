@@ -1,13 +1,14 @@
 import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Home from "./Pages/Home";
+import Home from "./Pages/Home.js";
 import About from "./Pages/About";
 import Menu from "./Pages/Menu";
 import Cart from "./Pages/Cart";
 import Navbar from "./components/Navbar";
 import dishesData from "./data.js";
 import "./App.css";
-import { useState, useReducer } from "react";
+import { useReducer } from "react";
+import EnterDetails from "./Pages/EnterDetails.js";
 
 const initialState = {
   cartItems: [],
@@ -56,6 +57,11 @@ function App() {
     dispatch({ type: "ADD", payload: itemObj });
   };
 
+  const updatedCartHandler = () => {};
+  const removeFromCartHandler = () => {};
+
+  console.log(cartState);
+
   return (
     <div className="App">
       <Navbar />
@@ -66,8 +72,18 @@ function App() {
           path="/menu"
           element={<Menu dishesData={dishesData} onAdd={addItemsToCart} />}
         />
-        <Route path="/cart" element={<Cart />} />
+        <Route
+          path="/cart"
+          element={
+            <Cart
+              cart={cartState}
+              onUpdate={updatedCartHandler}
+              onRemove={removeFromCartHandler}
+            />
+          }
+        />
         <Route path="/about" element={<About />} />
+        <Route path="/cart/enter_details" element={<EnterDetails />} />
       </Routes>
     </div>
   );

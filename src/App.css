@@ -1,3 +1,13 @@
 .menu {
   padding: 4rem 2rem;
 }
+
+.wrapper {
+  width: 70%;
+  margin: 4rem auto;
+}
+
+.cart h2,
+.cart h3 {
+  margin: 0 !important;
+}

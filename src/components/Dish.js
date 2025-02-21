@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Dish = ({ dishObj, onAdd }) => {
+  var navigate = useNavigate();
+
   const addToCartHandler = () => {
     onAdd({
       name: dishObj.name,
@@ -9,6 +12,8 @@ const Dish = ({ dishObj, onAdd }) => {
       price: dishObj.price,
       id: dishObj.id,
     });
+
+    navigate("/cart");
   };
 
   return (
